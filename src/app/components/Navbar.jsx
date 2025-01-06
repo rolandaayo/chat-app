@@ -2,9 +2,30 @@
 import { useAuth } from '../context/AuthContext';
 import Link from 'next/link';
 import { ChatLogo, GoogleIcon } from './Icons';
+import { useState } from 'react';
 
 const Navbar = () => {
-  const { user, signInWithGoogle, logout } = useAuth();
+  const { user, signInWithGoogle, logout, loading, error } = useAuth();
+  const [isSigningIn, setIsSigningIn] = useState(false);
+
+  const handleSignIn = async () => {
+    try {
+      setIsSigningIn(true);
+      await signInWithGoogle();
+    } catch (error) {
+      console.error('Failed to sign in:', error);
+    } finally {
+      setIsSigningIn(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Failed to logout:', error);
+    }
+  };
 
   return (
     <nav className="bg-[#2AABEE] text-white shadow-md">
@@ -18,7 +39,11 @@ const Navbar = () => {
           </Link>
 
           <div className="flex items-center space-x-4">
-            {user ? (
+            {loading ? (
+              <div className="animate-pulse bg-white/20 rounded-lg px-4 py-2">
+                Loading...
+              </div>
+            ) : user ? (
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
                   {user.photoURL ? (
@@ -35,7 +60,7 @@ const Navbar = () => {
                   <span className="hidden md:inline-block">{user.displayName}</span>
                 </div>
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-colors"
                 >
                   Logout
@@ -43,16 +68,22 @@ const Navbar = () => {
               </div>
             ) : (
               <button
-                onClick={signInWithGoogle}
-                className="flex items-center space-x-2 bg-white text-[#2AABEE] px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                onClick={handleSignIn}
+                disabled={isSigningIn}
+                className="flex items-center space-x-2 bg-white text-[#2AABEE] px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <GoogleIcon />
-                <span>Sign in with Google</span>
+                <span>{isSigningIn ? 'Signing in...' : 'Sign in with Google'}</span>
               </button>
             )}
           </div>
         </div>
       </div>
+      {error && (
+        <div className="bg-red-500 text-white text-sm py-2 px-4 text-center">
+          {error}
+        </div>
+      )}
     </nav>
   );
 };
