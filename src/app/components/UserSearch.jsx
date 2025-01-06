@@ -1,52 +1,43 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { db } from '../firebase/config';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, getDocs } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
 
 const UserSearch = ({ onSelectUser }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
-  const searchUsers = async (term) => {
-    if (!term.trim()) {
-      setSearchResults([]);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const usersRef = collection(db, 'users');
-      const q = query(
-        usersRef,
-        where('displayName', '>=', term),
-        where('displayName', '<=', term + '\uf8ff')
-      );
-
-      const querySnapshot = await getDocs(q);
-      const users = querySnapshot.docs
-        .map(doc => ({ ...doc.data(), uid: doc.id }))
-        .filter(u => u.uid !== user.uid); // Exclude current user
-
-      setSearchResults(users);
-    } catch (error) {
-      console.error('Error searching users:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Fetch all users once
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      if (searchTerm) {
-        searchUsers(searchTerm);
+    const fetchUsers = async () => {
+      if (!user) return;
+      
+      setLoading(true);
+      try {
+        const usersRef = collection(db, 'users');
+        const querySnapshot = await getDocs(usersRef);
+        const fetchedUsers = querySnapshot.docs
+          .map(doc => ({ ...doc.data(), uid: doc.id }))
+          .filter(u => u.uid !== user.uid); // Exclude current user
+        setUsers(fetchedUsers);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      } finally {
+        setLoading(false);
       }
-    }, 300);
+    };
 
-    return () => clearTimeout(delayDebounce);
-  }, [searchTerm]);
+    fetchUsers();
+  }, [user]);
+
+  // Filter users locally based on search term
+  const filteredUsers = users.filter(u => 
+    u.displayName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    u.email?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="w-full max-w-md mx-auto p-4">
@@ -65,9 +56,9 @@ const UserSearch = ({ onSelectUser }) => {
         )}
       </div>
 
-      {searchResults.length > 0 && (
-        <div className="mt-4 bg-white rounded-lg shadow-lg overflow-hidden">
-          {searchResults.map((result) => (
+      {filteredUsers.length > 0 && (
+        <div className="mt-4 bg-white rounded-lg shadow-lg overflow-hidden max-h-[400px] overflow-y-auto">
+          {filteredUsers.map((result) => (
             <button
               key={result.uid}
               onClick={() => onSelectUser(result)}
@@ -81,7 +72,7 @@ const UserSearch = ({ onSelectUser }) => {
                 />
               ) : (
                 <div className="w-10 h-10 rounded-full bg-[#2AABEE] text-white flex items-center justify-center">
-                  {result.displayName[0]}
+                  {result.displayName?.[0] || 'U'}
                 </div>
               )}
               <div className="text-left">
@@ -90,6 +81,12 @@ const UserSearch = ({ onSelectUser }) => {
               </div>
             </button>
           ))}
+        </div>
+      )}
+
+      {searchTerm && filteredUsers.length === 0 && (
+        <div className="mt-4 text-center text-gray-500">
+          No users found
         </div>
       )}
     </div>

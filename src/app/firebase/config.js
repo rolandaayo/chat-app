@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider, connectAuthEmulator } from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDFKTWw0DnyPj03_THOqxO3xl6Cahcu_hc",
@@ -15,13 +15,20 @@ const firebaseConfig = {
 // Initialize Firebase only if it hasn't been initialized already
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+const db = getFirestore(app);
 
 // Configure Google Auth Provider
+const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
   prompt: 'select_account'
 });
 
-const db = getFirestore(app);
+// Use emulator in development
+if (process.env.NODE_ENV === 'development') {
+  if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    connectAuthEmulator(auth, 'http://localhost:9099');
+    connectFirestoreEmulator(db, 'localhost', 8080);
+  }
+}
 
 export { auth, provider, db };
