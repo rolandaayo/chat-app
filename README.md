@@ -1,9 +1,9 @@
 <div align="center">
   <h2 align="center">Chat App</h2>
 
-  This is a fully responsive and functional ecommerce website, Responsive for all devices. <br/> Built using Next.js and TailwindCSS.
+  This is a fully responsive and functional chatting web app to add, search and chat with other registered users, Responsive for all devices. <br/> Built using Next.js, Firebase and TailwindCSS.
 
-  <a href="https://ecommerce-w3b.vercel.app/"><strong>➥ Live Demo</strong></a>
+  <a href="https://chat-app-w3b.vercel.app/"><strong>➥ Live Demo</strong></a>
 
 </div>
 
@@ -19,20 +19,20 @@ Before you begin, ensure you have met the following requirements:
 
 * [Git](https://git-scm.com/downloads "Download Git") must be installed on your operating system.
 
-### Installing Ecomerce
+### Installing Chat App
 
-To install **E-commerce Store**, run this command on your git bash:
+To install **Chat App**, run this command on your git bash:
 
 Linux and macOS:
 
 ```bash
-sudo git clone https://github.com/rolandaayo/ecommerce-store.git
+sudo git clone https://github.com/rolandaayo/chat-app.git
 ```
 
 Windows:
 
 ```bash
-git clone https://github.com/rolandaayo/ecommerce-store.git
+git clone https://github.com/rolandaayo/chat-app.git
 ```
 
 ## 💬 Contact
