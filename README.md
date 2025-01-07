@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
+  <h2 align="center">Chat App</h2>
 
-## Getting Started
+  This is a fully responsive and functional ecommerce website, Responsive for all devices. <br/> Built using Next.js and TailwindCSS.
 
-First, run the development server:
+  <a href="https://ecommerce-w3b.vercel.app/"><strong>➥ Live Demo</strong></a>
+
+</div>
+
+<br />
+
+### Demo Screeshots
+
+![Micro Desktop Demo](./readme-images/readme-1.png "Desktop Demo")
+
+### Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+* [Git](https://git-scm.com/downloads "Download Git") must be installed on your operating system.
+
+### Installing Ecomerce
+
+To install **E-commerce Store**, run this command on your git bash:
+
+Linux and macOS:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+sudo git clone https://github.com/rolandaayo/ecommerce-store.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Windows:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+git clone https://github.com/rolandaayo/ecommerce-store.git
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 💬 Contact
 
-## Learn More
+If you have an offer, opportunity, or introduction that might make my life more interesting, email me at ibiwoyeroland@gmail.com.
 
-To learn more about Next.js, take a look at the following resources:
+For the reasons stated above, I'll only respond to proposals that are matched for my schedule and interests.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is **free to use** and does not contains any license.
